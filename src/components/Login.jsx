@@ -2,24 +2,25 @@ import axios from "axios";
 import React, { useState } from "react";
 
 const Login = () => {
-  const [email, setEmail] = useState("eve.holt@reqres.in");
-  const [password, setPassword] = useState("5cityslicka");
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
+  // const [email, setEmail] = useState("eve.holt@reqres.in");
+  // const [password, setPassword] = useState("5cityslicka");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("https://reqres.in/api/login", { email, password })
+      .post(
+        "https://reqres.in/api/login",
+        { email, password },
+        { headers: { "Content-Type": "application/json" } }
+      )
       .then((res) => {
-        if (res.status === 200) {
-          setEmail("");
-          setPassword("");
-          console.log(res.data);
-          alert("Success Login");
-        }
+        alert("Successfully login");
+        console.log(res?.data?.token);
       })
-      .catch((err) => {
-        alert("Something wrong");
-        console.log(err.message);
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 
@@ -33,7 +34,7 @@ const Login = () => {
           </div>
           <div className="form-group mb-3">
             <input
-              value={email}
+              value={email || ""}
               onChange={(e) => setEmail(e.target.value)}
               type="email"
               className="form-control"
@@ -42,7 +43,7 @@ const Login = () => {
           </div>
           <div className="form-group">
             <input
-              value={password}
+              value={password || ""}
               onChange={(e) => setPassword(e.target.value)}
               type="password"
               className="form-control"
